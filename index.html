@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYANN SCRIPT HUB</title>
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#050505;
+    color:white;
+    overflow:hidden;
+    position:relative;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(#ffffff08 1px,transparent 1px),
+        linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:linear-gradient(to bottom,transparent,#000,transparent);
+    pointer-events:none;
+    z-index:0;
+}
+
+/* CHỮ N BAY */
+.floating-n {
+    position:fixed;
+    font-weight:900;
+    color:#000000;
+    pointer-events:none;
+    z-index:1;
+    opacity:0.3;
+    text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    user-select:none;
+    animation: floatN linear infinite;
+}
+
+@keyframes floatN {
+    0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.8);
+        opacity:0.1;
+    }
+    10% {
+        opacity:0.3;
+    }
+    90% {
+        opacity:0.3;
+    }
+    100% {
+        transform: translateY(-10vh) rotate(720deg) scale(1.2);
+        opacity:0;
+    }
+}
+
+/* CARD */
+.card{
+    position:relative;
+    width:90%;
+    max-width:620px;
+    background:#0b0b0b;
+    border:1px solid #333;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:
+        0 0 0 1px #ffffff08,
+        0 0 40px #000;
+    z-index:2;
+}
+
+/* TOP BAR */
+.topbar{
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    border-bottom:1px solid #292929;
+    background:#101010;
+}
+
+.dots{
+    display:flex;
+    gap:6px;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#555;
+}
+
+.status{
+    color:#777;
+    font-family:monospace;
+    font-size:11px;
+    letter-spacing:2px;
+}
+
+/* LOGO AREA */
+.logo-area{
+    height:260px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    background:
+        radial-gradient(circle,#202020 0%,#090909 55%,#050505 100%);
+}
+
+.logo-area::before{
+    content:"";
+    position:absolute;
+    width:190px;
+    height:190px;
+    border:1px solid #444;
+    transform:rotate(45deg);
+    opacity:.4;
+}
+
+.logo-area::after{
+    content:"N";
+    position:absolute;
+    font-size:230px;
+    font-weight:900;
+    color:#ffffff03;
+}
+
+.logo{
+    position:relative;
+    z-index:2;
+    font-size:130px;
+    font-weight:900;
+    letter-spacing:-15px;
+    color:white;
+    text-shadow:
+        4px 0 #555,
+        -4px 0 #222;
+}
+
+/* CONTENT */
+.content{
+    padding:22px;
+}
+
+.title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.title h1{
+    font-size:22px;
+    letter-spacing:1px;
+}
+
+.version{
+    font-size:10px;
+    color:#888;
+    border:1px solid #444;
+    padding:5px 8px;
+    border-radius:5px;
+}
+
+.description{
+    color:#777;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+/* KEY BOX */
+.key-box{
+    display:none;
+    margin-bottom:15px;
+}
+
+.key-title{
+    color:#888;
+    font-family:monospace;
+    font-size:11px;
+    margin-bottom:8px;
+}
+
+.key-display{
+    display:flex;
+    gap:10px;
+}
+
+.key-text{
+    flex:1;
+    min-width:0;
+    padding:13px;
+    background:#050505;
+    color:#7ee787;
+    border:1px solid #333;
+    border-radius:9px;
+    font-family:monospace;
+    font-size:12px;
+    word-break:break-all;
+}
+
+.get-key{
+    width:100%;
+    margin-bottom:15px;
+    padding:14px;
+    border:1px solid #555;
+    border-radius:9px;
+    background:#151515;
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+    letter-spacing:1px;
+    transition:.2s;
+}
+
+.get-key:hover{
+    background:white;
+    color:black;
+}
+
+.get-key:active{
+    transform:scale(.98);
+}
+
+.copy-key{
+    padding:13px 16px;
+    border:1px solid #555;
+    border-radius:9px;
+    background:#151515;
+    color:white;
+    cursor:pointer;
+    font-size:12px;
+    transition:.2s;
+}
+
+.copy-key:hover{
+    background:white;
+    color:black;
+}
+
+/* FOOTER */
+.footer{
+    padding:0 22px 18px;
+    color:#555;
+    font-family:monospace;
+    font-size:10px;
+}
+
+/* TOAST */
+#toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(80px);
+    background:#151515;
+    border:1px solid #555;
+    color:white;
+    padding:13px 20px;
+    border-radius:10px;
+    font-family:monospace;
+    font-size:13px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:9999;
+}
+
+#toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+    body{
+        padding:15px;
+        overflow:auto;
+    }
+    .card{
+        width:100%;
+    }
+    .logo-area{
+        height:220px;
+    }
+    .logo{
+        font-size:110px;
+    }
+    .title h1{
+        font-size:17px;
+    }
+    .key-display{
+        flex-direction:column;
+    }
+    .copy-key{
+        width:100%;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<!-- CHỮ N BAY SẼ ĐƯỢC TẠO BẰNG JAVASCRIPT -->
+
+<div class="card">
+    <div class="topbar">
+        <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="status">NYANN_OS // KEY ONLINE</div>
+    </div>
+
+    <div class="logo-area">
+        <div class="logo">N</div>
+    </div>
+
+    <div class="content">
+        <div class="title">
+            <h1>NYANN OS</h1>
+            <div class="version">Get key</div>
+        </div>
+
+        <p class="description">▸ by real _@nyann</p>
+
+        <!-- GET KEY BUTTON -->
+        <button class="get-key" onclick="getKey()">GET KEY</button>
+
+        <!-- KEY HIỂN THỊ -->
+        <div class="key-box" id="keyBox">
+            <div class="key-title">▸ YOUR KEY</div>
+            <div class="key-display">
+                <div class="key-text" id="keyText"></div>
+                <button class="copy-key" id="copyKeyButton" onclick="copyKey()">COPY KEY</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">root@nyann:~$ system_status --online</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+/* =========================
+   TẠO CHỮ N BAY
+========================= */
+function createFloatingNs() {
+    const total = 100;
+    
+    for (let i = 0; i < total; i++) {
+        const n = document.createElement('div');
+        n.className = 'floating-n';
+        n.textContent = 'N';
+        
+        // Kích thước ngẫu nhiên từ 14px đến 40px
+        const size = 14 + Math.random() * 26;
+        n.style.fontSize = size + 'px';
+        
+        // Vị trí ngang ngẫu nhiên
+        n.style.left = Math.random() * 100 + '%';
+        
+        // Độ trễ ngẫu nhiên để bay không đồng loạt
+        const delay = Math.random() * 15;
+        n.style.animationDelay = delay + 's';
+        
+        // Tốc độ bay chậm từ 12s đến 20s
+        const duration = 12 + Math.random() * 8;
+        n.style.animationDuration = duration + 's';
+        
+        // Độ mờ ngẫu nhiên
+        n.style.opacity = 0.1 + Math.random() * 0.2;
+        
+        document.body.appendChild(n);
+    }
+}
+
+// Gọi hàm tạo chữ N khi trang load
+window.addEventListener('load', createFloatingNs);
+
+/* =========================
+   DANH SÁCH KEY
+========================= */
+const Keys = [
+    "FREE_10d9705fb47db089f8311080cb1473bj",
+    "FREE_fa7a1abff341a12790bhb83c399c9ba7",
+    "FREE_a116bd6be93d5bba4f4e9bb13338f4a4",
+    "FREE_2399f27acdd2f3225b29b4c4c9bd25bg",
+    "FREE_7b6c448aeafecc9379253fd2feb65b6d",
+    "FREE_325243ab666b141540ac77f16c3dd64j",
+    "FREE_bc36aade5f6b39a9249b4ac0023f226f",
+    "FREE_0aa3ba4cb3330ba44571176611e8410hf",
+    "FREE_blizt-2YZG-M8DV-SEVN-JI2Q3fffhbk89",
+    "FREE_a95d706d09b6d9477d47bbc3a4c61b8n",
+    "FREE_7461b46feacae25298f3f7fd8806196aBV",
+    "FREE_d15769ef1f7dcc6cc5a3e80e7ffd628dg",
+    "FREE_53d53aed2789171fead7560ee92bbc1bk",
+    "FREE_faaa8daf74a722b68a447c7d9ba10768ju",
+    "FREE_b24830deaaba386c9e501b20d14a2bfak",
+    "FREE_c9479cfd73f369396dae30323dff974aj",
+    "FREE_d2cf1eac32d9a8203684cf13638a47e7h",
+    "FREE_f64e62bc1b7b912aed0772dc9bf77ccbg",
+    "FREE_1f2b1ecf5bbe285b92c5ac185c8c59d3h",
+    "FREE_036ea38e306e7bdf3ce0aa875bc1408af",
+    "FREE_85bf72ebb32dfc0b31bf1d8680a291f97",
+    "FREE_2cfd7bacf46c6cc4c657c30d83beeca6.3",
+    "FREE_4f53fdae19db63b79faf19a1ef24a8d2h",
+    "FREE_GA173JlW-oBRnypjL-09SJfVpg"
+];
+
+/* =========================
+   HIỆN TOAST
+========================= */
+function showToast(message){
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.classList.add("show");
+    setTimeout(function(){
+        toast.classList.remove("show");
+    },2000);
+}
+
+/* =========================
+   GET KEY
+========================= */
+function getKey(){
+    const randomIndex = Math.floor(Math.random() * Keys.length);
+    const randomKey = Keys[randomIndex];
+    
+    document.getElementById("keyText").innerText = randomKey;
+    document.getElementById("keyBox").style.display = "block";
+    
+    showToast("✓ KEY GENERATED");
+}
+
+/* =========================
+   COPY KEY
+========================= */
+async function copyKey() {
+    const key = document.getElementById("keyText").textContent;
+    const button = document.getElementById("copyKeyButton");
+
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(key);
+        } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = key;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.left = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            textarea.setSelectionRange(0, textarea.value.length);
+            const copied = document.execCommand("copy");
+            document.body.removeChild(textarea);
+            if (!copied) {
+                throw new Error("Copy failed");
+            }
+        }
+
+        button.innerText = "COPIED ✓";
+        showToast("✓ KEY COPIED");
+        setTimeout(() => {
+            button.innerText = "COPY KEY";
+        }, 1500);
+    } catch (err) {
+        console.error(err);
+        showToast("✕ COPY KEY FAILED");
+    }
+}
+
+</script>
+
+</body>
+  </html>
